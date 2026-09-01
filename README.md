@@ -34,7 +34,7 @@ Um das Skript nutzen zu können, benötigen Sie einen API-User und einen API-Key
 3. Klicken Sie auf das **[+]** Symbol, um ein neues Skript zu erstellen.
 4. Vergeben Sie einen Namen, z.B. `Firestorm-DynDNS`.
 5. Setzen Sie die erforderlichen Berechtigungen (Policies): `read`, `write`, `policy`, `test`.
-6. Fügen Sie das Skript in das Textfeld ein und passen Sie die **Variablen** im oberen Bereich an:
+6. Fügen Sie den Inhalt vom Skript "firestorm_mikrotik_dyndns.rsc" in das Textfeld ein und passen Sie die **Variablen** im oberen Bereich an:
 
 ```routeros
 # BITTE DIESE VARIABLEN ANPASSEN
