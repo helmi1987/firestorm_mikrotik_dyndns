@@ -1,6 +1,7 @@
 # Firestorm DynDNS Script für MikroTik RouterOS
 
-Dieses Skript aktualisiert dynamisch die IP-Adresse eines DNS-Eintrags über die Firestorm API für MikroTik Router.
+Dieses Skript aktualisiert dynamisch die IP-Adresse eines DNS-Eintrags über die Firestorm API für MikroTik Router. 
+Die Skript-Datei in diesem Repository heisst `firestorm_mikrotik_dyndns.rsc`.
 
 ## Funktionsweise des Skripts
 Das Skript ist sehr effizient und netzwerkschonend programmiert (v2 mit Quick-Check):
@@ -29,12 +30,12 @@ Um das Skript nutzen zu können, benötigen Sie einen API-User und einen API-Key
 
 ## 2. MikroTik Script einrichten
 
-1. Verbinden Sie sich mit Ihrem MikroTik Router (z.B. über Winbox).
+1. Verbinden Sie sich mit Ihrem MikroTik Router (z.B. über Winbox oder WebFig).
 2. Navigieren Sie zu **System > Scripts**.
 3. Klicken Sie auf das **[+]** Symbol, um ein neues Skript zu erstellen.
-4. Vergeben Sie einen Namen, z.B. `Firestorm-DynDNS`.
+4. Vergeben Sie einen Namen, z.B. `firestorm_dyndns_update`.
 5. Setzen Sie die erforderlichen Berechtigungen (Policies): `read`, `write`, `policy`, `test`.
-6. Fügen Sie den Inhalt vom Skript "firestorm_mikrotik_dyndns.rsc" in das Textfeld ein und passen Sie die **Variablen** im oberen Bereich an:
+6. Fügen Sie den Inhalt der Datei `firestorm_mikrotik_dyndns.rsc` in das Textfeld ein und passen Sie die **Variablen** im oberen Bereich an:
 
 ```routeros
 # BITTE DIESE VARIABLEN ANPASSEN
@@ -47,20 +48,21 @@ Um das Skript nutzen zu können, benötigen Sie einen API-User und einen API-Key
 :local wanInterface "ethernet1" # Name Ihres WAN-Interfaces
 :local ttl "60"
 ```
-*(Den Rest des Skripts können Sie unverändert lassen)*
+*(Den Rest des Skripts belassen Sie unverändert)*
 
 ---
 
 ## 3. MikroTik Scheduler einrichten (Automatisierung)
 
-Damit das Skript regelmäßig prüft, ob sich Ihre IP geändert hat, richten wir einen Scheduler ein:
+Damit das Skript regelmässig prüft, ob sich Ihre IP geändert hat, richten wir einen Scheduler ein:
 
-1. Navigieren Sie in Winbox zu **System > Scheduler**.
+1. Navigieren Sie zu **System > Scheduler**.
 2. Klicken Sie auf das **[+]** Symbol.
-3. Vergeben Sie einen Namen, z.B. `Schedule-Firestorm-DynDNS`.
+3. Vergeben Sie einen Namen (z.B. `FirestormDyndns`).
 4. Setzen Sie das **Interval** auf eine sinnvolle Zeitspanne, z.B. `00:05:00` (alle 5 Minuten).
-5. Tragen Sie unter **On Event** exakt den Namen Ihres Skripts ein:
-   ```text
-   Firestorm-DynDNS
-   ```
-6. Klicken Sie auf **OK**. Ihr Router hält nun Ihre Firestorm-Domain vollautomatisch aktuell!
+5. Tragen Sie im Feld **On Event** exakt den Namen Ihres Skripts ein (z.B. `firestorm_dyndns_update`).
+6. **WICHTIG (Policies):** Stellen Sie sicher, dass sowohl beim Skript als auch beim Scheduler zwingend die Haken bei **read**, **write**, **policy** und **test** gesetzt sind, wie im folgenden Bild gezeigt:
+   ![Script und Scheduler Einrichtung](image_ee4ead.jpg)
+7. Klicken Sie auf **OK**. 
+
+Ihr Router prüft nun alle 5 Minuten lokal die IP und hält Ihre Firestorm-Domain vollautomatisch aktuell!
