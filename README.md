@@ -12,6 +12,13 @@ Das Skript ist sehr effizient und netzwerkschonend programmiert (v2 mit Quick-Ch
 
 ---
 
+## Voraussetzungen
+
+- RouterOS 7.13 oder neuer (das Skript nutzt `:deserialize`).
+- Policies `read`, `write`, `policy`, `test` für Skript und Scheduler.
+
+---
+
 ## 1. Firestorm API Key erstellen
 
 Um das Skript nutzen zu können, benötigen Sie einen API-User und einen API-Key von Firestorm.
@@ -38,17 +45,28 @@ Um das Skript nutzen zu können, benötigen Sie einen API-User und einen API-Key
 6. Fügen Sie den Inhalt der Datei `firestorm_mikrotik_dyndns.rsc` in das Textfeld ein und passen Sie die **Variablen** im oberen Bereich an:
 
 ```routeros
-# BITTE DIESE VARIABLEN ANPASSEN
 :local apiUser "IHR-API-USER"
 :local apiKey "IHR-API-KEY"
 :local zoneId "IHRE-ZONE-ID"
 :local recordName "subdomain.ihredomain.ch"
-:local subDomain "subdomain"
 :local recordType "A"
-:local wanInterface "ethernet1" # Name Ihres WAN-Interfaces
+:local wanInterface "ethernet1"
 :local ttl "60"
+:local dnsServer "1.1.1.1"
+:local dnsServer2 "9.9.9.9"
 ```
-*(Den Rest des Skripts belassen Sie unverändert)*
+
+| Variable | Beschreibung |
+|---|---|
+| `apiUser` / `apiKey` | API-User (`X-Api-User`) und API-Key (`X-Api-Key`) aus Schritt 1 |
+| `zoneId` | ID der DNS-Zone bei Firestorm |
+| `recordName` | Vollständiger Name des Records (ein Punkt am Ende wird entfernt) |
+| `recordType` | Record-Typ, `A`. Die IP wird als IPv4 vom WAN-Interface gelesen. |
+| `wanInterface` | Name des WAN-Interfaces |
+| `ttl` | TTL in Sekunden |
+| `dnsServer` / `dnsServer2` | Externe Resolver für den Quick-Check, `dnsServer2` ist Fallback |
+
+*(Den Rest des Skripts belassen Sie unverändert. Kommentare in RouterOS-Skripten nur auf eigenen Zeilen, nicht hinter einem Befehl.)*
 
 ---
 

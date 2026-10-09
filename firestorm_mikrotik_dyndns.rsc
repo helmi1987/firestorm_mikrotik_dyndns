@@ -7,7 +7,7 @@
 :local apiKey "api-x-key"
 :local zoneId ""
 :local recordName "subdomain.domain.ltd"
-:local subDomain "subdomain"
+# recordType: A (IPv4); the WAN address is read from /ip address
 :local recordType "A"
 :local wanInterface "ethernet1"
 :local ttl "60"
@@ -72,7 +72,7 @@
                 :foreach record in=($jsonData->"records") do={
                     :local recName ($record->"name")
                     :local recType ($record->"type")
-                    :if ($recName = $recordName && $recType = "A") do={
+                    :if ($recName = $recordName && $recType = $recordType) do={
                         :set oldIp ($record->"data")
                     }
                 }
@@ -92,7 +92,7 @@
             :log info ("Firestorm DynDNS: IP change detected (" . $oldIp . " -> " . $currentIp . "). Updating DNS...")
 
             :local putUrl "https://api.firestorm.ch/dns/v1/zone/$zoneId/record"
-            :local payload "{\"name\":\"$recordName\",\"type\":\"A\",\"old_data\":\"$oldIp\",\"data\":\"$currentIp\",\"ttl\":$ttl}"
+            :local payload "{\"name\":\"$recordName\",\"type\":\"$recordType\",\"old_data\":\"$oldIp\",\"data\":\"$currentIp\",\"ttl\":$ttl}"
 
             :local hUser ("X-Api-User: " . $apiUser)
             :local hKey ("X-Api-Key: " . $apiKey)
